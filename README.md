@@ -19,29 +19,37 @@ The core of this project is a simulation script that runs thousands of games to 
 ## 📂 Project Structure
 ```text
 .
-├── game_engine.py      # Contains play_game() and play_optimal_game() logic
-├── main.py             # The simulation script (runs the experiments)
-├── requirements.txt    # Dependencies (pandas, matplotlib)
-└── README.md           # This file
+├── game_engine.py        # Core library containing the logic for Random and Binary Search players
+├── main.py               # Intro simulation: Runs 1,000 games and visualizes the distribution of guesses
+├── scaling.py            # Convergence analysis: Demonstrates the Law of Large Numbers as N increases
+├── compare_strategies.py # Efficiency showdown: Plots Random Search (2 ln N) vs Optimal Binary Search (log2 N)
+├── requirements.txt      # List of required Python libraries (pandas, matplotlib)
+└── README.md             # Project documentation and summary of findings
 ```
 
 ## 🛠️ Installation & Usage
-Clone the repository
+1. Clone the repository
 ```Bash
 git clone https://github.com/JTyler13/HigherOrLower.git
 cd HigherOrLower
 ```
 
-Install Dependencies It is recommended to use a virtual environment.
+2. Install Dependencies
+It is recommended to use a virtual environment.
 ```Bash
 pip install -r requirements.txt
 ```
 
-Run the Simulation.
+3. Run the Simulations
+- Intro Simulation (Distribution of Guesses):
 ```Bash
 python main.py
 ```
-To run the head-to-head comparison:
+- Convergence Analysis (Scaling Experiment):
+```Bash
+python scaling.py
+```
+- Head-to-Head Comparison (Random Vs Optimal):
 ```Bash
 python compare_strategies.py
 ```
