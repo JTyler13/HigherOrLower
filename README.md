@@ -28,7 +28,7 @@ The core of this project is a simulation script that runs thousands of games to 
 ## 🛠️ Installation & Usage
 Clone the repository
 ```Bash
-git clone [https://github.com/YourUsername/HigherOrLower.git](https://github.com/YourUsername/HigherOrLower.git)
+git clone https://github.com/JTyler13/HigherOrLower.git
 cd HigherOrLower
 ```
 
