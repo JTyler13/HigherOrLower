@@ -1,0 +1,7 @@
+[theme]
+base="light"
+primaryColor="#78C2AD"          # The signature "Minty" Teal
+backgroundColor="#FFFFFF"       # Clean White background
+secondaryBackgroundColor="#F7F7F9" # Very light grey for sidebars/inputs
+textColor="#5A5A5A"             # Soft Dark Grey (instead of harsh black)
+font="sans serif"               # Closest match to Minty's "Montserrat"
