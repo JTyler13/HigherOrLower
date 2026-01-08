@@ -7,7 +7,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
-#### Game function ####
+#### Game functions ####
 def play_game(upper_bound=10):
     current_guess=0
     guesses=[]
@@ -17,6 +17,30 @@ def play_game(upper_bound=10):
 
     while current_guess != target:
         current_guess=random.randint(p1,p2)
+        guesses.append(current_guess)
+        if current_guess == target:
+            break
+        elif current_guess > target:
+            p2 = current_guess -1
+        else:
+            p1 = current_guess +1
+
+    return {
+        "target": target,
+        "count": len(guesses),
+        "history": guesses,
+        "limit":upper_bound
+    }
+
+def play_optimal_game(upper_bound=10):
+    current_guess=0
+    guesses=[]
+    target=random.randint(1,upper_bound)
+    p1=1
+    p2=upper_bound
+
+    while current_guess != target:
+        current_guess=(p1+p2)//2
         guesses.append(current_guess)
         if current_guess == target:
             break
