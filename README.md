@@ -2,6 +2,8 @@
 
 A Python-based simulation engine that models the "Higher or Lower" guessing game to empirically compare search algorithms. This project demonstrates the efficiency gap between **Randomized Search** ($2 \ln N$) and **Binary Search** ($\log_2 N$).
 
+Now features an **Interactive Web Dashboard** to visualize game paths, scaling experiments, and strategy comparisons in real-time.
+
 ## 📊 The Analysis
 The core of this project is a simulation script that runs thousands of games to visualize algorithmic complexity.
 
@@ -11,20 +13,27 @@ The core of this project is a simulation script that runs thousands of games to 
 * **Law of Large Numbers:** The simulation demonstrates how the observed average converges to the theoretical limit as $N$ increases.
 
 ## 🚀 Features
+* **Interactive Dashboard:** A full Streamlit web application (`app.py`) allowing users to:
+    * Run live simulations with adjustable parameters.
+    * Inspect specific game paths visually.
+    * Compare strategy efficiency on the fly.
 * **Game Engine:** A reusable module (`game_engine.py`) containing the game logic for both Random and Optimal players.
-* **Simulation Pipeline:** A script that runs thousands of iterations, handling data collection and aggregation.
+* **Simulation Pipeline:** Scripts that run thousands of iterations, handling data collection and aggregation.
 * **Pandas Integration:** Uses DataFrames for efficient storage and statistical analysis of game history.
-* **Visualization:** Matplotlib scripts to generate convergence charts and efficiency comparisons.
+* **Custom Theming:** Implements a "Minty" Bootstrap theme via `.streamlit/config.toml` for a clean UI.
 
 ## 📂 Project Structure
 ```text
 .
+├── app.py                # Main Entry Point: Streamlit Web Dashboard
 ├── game_engine.py        # Core library containing the logic for Random and Binary Search players
-├── main.py               # Intro simulation: Runs 1,000 games and visualizes the distribution of guesses
-├── scaling.py            # Convergence analysis: Demonstrates the Law of Large Numbers as N increases
-├── compare_strategies.py # Efficiency showdown: Plots Random Search (2 ln N) vs Optimal Binary Search (log2 N)
-├── requirements.txt      # List of required Python libraries (pandas, matplotlib)
-└── README.md             # Project documentation and summary of findings
+├── .streamlit/
+│   └── config.toml       # Theme configuration (Minty Theme colors)
+├── main.py               # CLI: Intro simulation (Distribution of guesses)
+├── scaling.py            # CLI: Convergence analysis (Law of Large Numbers)
+├── compare_strategies.py # CLI: Efficiency showdown (Random vs Optimal)
+├── requirements.txt      # List of required libraries (streamlit, pandas, matplotlib)
+└── README.md             # Project documentation
 ```
 
 ## 🛠️ Installation & Usage
@@ -40,27 +49,17 @@ It is recommended to use a virtual environment.
 pip install -r requirements.txt
 ```
 
-3. Run the Simulations
-- Intro Simulation (Distribution of Guesses):
+3. Run the Dashboard
+To launch the web interface:
 ```Bash
-python main.py
+streamlit run app.py
 ```
-- Convergence Analysis (Scaling Experiment):
+4. Run Standalone Scripts (Optional)
+If you prefer running specific analyses via the terminal:
 ```Bash
-python scaling.py
+python main.py               # Run distribution analysis
+python scaling.py            # Run scaling experiment
+python compare_strategies.py # Run strategy comparison
 ```
-- Head-to-Head Comparison (Random Vs Optimal):
-```Bash
-python compare_strategies.py
-```
-
-## 🧠 What I Learned
-- **Python Modules:** Refactoring code into reusable modules (game_engine) vs execution scripts.
-
-- **List Comprehensions:** Replacing R-style loops with Pythonic list construction.
-
-- **Pandas vs R:** Translating tidyverse concepts into Pandas DataFrames.
-
-- **Algorithmic Complexity:** Empirically proving Big O notation through simulation.
 
 `This code was created in conjunction with GitHub Copilot`
