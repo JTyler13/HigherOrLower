@@ -10,9 +10,6 @@ The core of this project is a simulation script that runs thousands of games to 
 * **Optimal Strategy:** Uses Binary Search to achieve $\log_2 N$ efficiency (approx. 20 guesses for 1,000,000 numbers).
 * **Law of Large Numbers:** The simulation demonstrates how the observed average converges to the theoretical limit as $N$ increases.
 
-![Comparison Plot](comparison_plot.png)
-*(Note: Upload a screenshot of your plot to the repo and name it comparison_plot.png to see it here)*
-
 ## 🚀 Features
 * **Game Engine:** A reusable module (`game_engine.py`) containing the game logic for both Random and Optimal players.
 * **Simulation Pipeline:** A script that runs thousands of iterations, handling data collection and aggregation.
@@ -30,27 +27,28 @@ The core of this project is a simulation script that runs thousands of games to 
 
 ## 🛠️ Installation & Usage
 Clone the repository
-
 ```Bash
 git clone [https://github.com/YourUsername/HigherOrLower.git](https://github.com/YourUsername/HigherOrLower.git)
 cd HigherOrLower
-Install Dependencies It is recommended to use a virtual environment.
 ```
 
+Install Dependencies It is recommended to use a virtual environment.
 ```Bash
 pip install -r requirements.txt
-Run the Simulation To run the head-to-head comparison:
 ```
 
+Run the Simulation To run the head-to-head comparison:
 ```Bash
 python main.py
 ```
 
 ## 🧠 What I Learned
-- Python Modules: Refactoring code into reusable modules (game_engine) vs execution scripts.
+- **Python Modules:** Refactoring code into reusable modules (game_engine) vs execution scripts.
 
-- List Comprehensions: Replacing R-style loops with Pythonic list construction.
+- **List Comprehensions:** Replacing R-style loops with Pythonic list construction.
 
-- Pandas vs R: Translating tidyverse concepts into Pandas DataFrames.
+- **Pandas vs R:** Translating tidyverse concepts into Pandas DataFrames.
 
-- Algorithmic Complexity: Empirically proving Big O notation through simulation.
+- **Algorithmic Complexity:** Empirically proving Big O notation through simulation.
+
+`This code was created in conjunction with GitHub Copilot`
