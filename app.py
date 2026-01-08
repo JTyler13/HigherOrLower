@@ -3,12 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import math
-from game_engine import play_game, play_optimal_game
+from game_engine import play_game, play_optimal_game, play_human_game, play_bayesian_game, get_human_probabilities
 
 # --- GLOBAL CONFIGURATION ---
 # Change these values to resize ALL plots at once
 PLOT_CONFIG = {
-    "figsize": (10, 5),   # Width, Height in inches
+    "figsize": (15, 7.5),   # Width, Height in inches
     "dpi": 250           # Resolution
 }
 # ----------------------------
@@ -54,11 +54,12 @@ def draw_game_safe(result):
     return fig
 
 # Create the tabs
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📊 Distribution",
     "🔍 Game Inspector",
     "📈 Scaling Convergence",
-    "⚔️ Strategy Compare"
+    "⚔️ Strategy Compare",
+    "🧠 Human Mode"
 ])
 
 # --- TAB 1: Distribution Analysis ---
@@ -90,7 +91,7 @@ with tab1:
             fig, ax = plt.subplots(figsize=PLOT_CONFIG["figsize"], dpi=PLOT_CONFIG["dpi"])
 
             df_dist['count'].hist(bins=range(1, df_dist['count'].max() + 2),
-                                  ax=ax, edgecolor='black', alpha=0.7)
+                                ax=ax, edgecolor='black', alpha=0.7)
             ax.axvline(avg_attempts, color='red', linestyle='dashed', label=f'Mean: {avg_attempts:.2f}')
             ax.set_title(f"Distribution of Guesses (N={sim_limit})")
             ax.set_xlabel("Guesses Needed")
@@ -98,7 +99,7 @@ with tab1:
             ax.legend()
 
             # Center the plot
-            c1, c2, c3 = st.columns([1, 2, 1])
+            c1, c2, c3 = st.columns([1, 4, 1])
             with c2:
                 st.pyplot(fig, width="content")
 
@@ -118,7 +119,7 @@ with tab2:
             result = play_game(insp_limit)
             fig = draw_game_safe(result)
 
-            c1, c2, c3 = st.columns([1, 2, 1])
+            c1, c2, c3 = st.columns([1, 4, 1])
             with c2:
                 st.pyplot(fig, width="content")
 
@@ -139,7 +140,7 @@ with tab2:
 
             fig = draw_game_safe(worst_game_data)
 
-            c1, c2, c3 = st.columns([1, 2, 1])
+            c1, c2, c3 = st.columns([1, 4, 1])
             with c2:
                 st.pyplot(fig, width="content")
         else:
@@ -193,7 +194,7 @@ with tab3:
             ax.legend()
             ax.grid(True, which="both", ls="-", alpha=0.2)
 
-            c1, c2, c3 = st.columns([1, 2, 1])
+            c1, c2, c3 = st.columns([1, 4, 1])
             with c2:
                 st.pyplot(fig, width="content")
 
@@ -248,9 +249,118 @@ with tab4:
             ax.legend()
             ax.grid(True, alpha=0.3)
 
-            c1, c2, c3 = st.columns([1, 2, 1])
+            c1, c2, c3 = st.columns([1, 4, 1])
             with c2:
                 st.pyplot(fig, width="content")
 
             with st.expander("View Raw Data"):
                 st.dataframe(df_comp)
+
+# --- TAB 5: Human Mode ---
+with tab5:
+    st.header("The Human Element")
+    st.write("Humans are not random. We prefer birthdays (1-31), odd numbers, and 'lucky' numbers.")
+
+    h_limit = st.number_input(
+        "Range Limit",
+        value=100,
+        min_value=10,
+        max_value=5000,
+        step=10,
+        key="human_limit"
+    )
+
+    # 1. Visualize the Bias
+    probs = get_human_probabilities(h_limit)
+    df_bias = pd.DataFrame({
+        "Number": range(1, h_limit + 1),
+        "Probability": probs
+    })
+
+    st.subheader("The 'Human' Probability Distribution")
+    st.write("Peaks indicate numbers humans are more likely to pick (e.g., dates, primes).")
+
+    # PLOTTING WITH GLOBAL CONFIG
+    fig, ax = plt.subplots(figsize=PLOT_CONFIG["figsize"], dpi=PLOT_CONFIG["dpi"])
+    ax.bar(df_bias["Number"], df_bias["Probability"], color='purple', alpha=0.7)
+    ax.set_xlabel("Number Selection")
+    ax.set_ylabel("Probability")
+    ax.set_title(f"Human Bias Model (1-{h_limit})")
+
+    c1, c2, c3 = st.columns([1, 4, 1])
+    with c2:
+        st.pyplot(fig, width="content")
+
+    # 2. Run Head-to-Head-to-Head
+    st.divider()
+    st.subheader("Strategy Showdown")
+    st.write("Comparing strategies against a Human opponent (Simulating 5,000 Games).")
+
+    if st.button("Run Large Experiment"):
+        with st.spinner("Simulating 5,000 games (this may take a moment)..."):
+            n_games = 5000  # Increased from 1,000
+
+            # Storage for results
+            random_scores = []
+            standard_scores = []
+            bayesian_scores = []
+
+            for _ in range(n_games):
+                # Run the Human Game
+                human_results = play_human_game(h_limit)
+
+                # Extract scores
+                random_scores.append(human_results['random']['count'])
+                standard_scores.append(human_results['optimal']['count'])
+                bayesian_scores.append(play_bayesian_game(h_limit)['count'])
+
+            # Calculate Averages
+            avg_random = sum(random_scores) / n_games
+            avg_standard = sum(standard_scores) / n_games
+            avg_bayesian = sum(bayesian_scores) / n_games
+
+            # --- DISPLAY METRICS ---
+            c1, c2, c3 = st.columns(3)
+
+            c1.metric("Random Guessing", f"{avg_random:.2f}", "Baseline", delta_color="off")
+            c2.metric("Standard Binary", f"{avg_standard:.2f}", f"{(avg_random - avg_standard):.2f} faster than random", delta_color="normal")
+            c3.metric("Bayesian Search", f"{avg_bayesian:.2f}", f"{(avg_standard - avg_bayesian):.2f} faster than binary", delta_color="normal")
+
+            # --- DENSITY PLOT ---
+            st.subheader("Probability Density of Guesses")
+            st.caption("Note: 'Random' is excluded from the plot as it averages ~50 guesses, which would distort the scale.")
+
+            # Create a DataFrame for easy plotting
+            df_density = pd.DataFrame({
+                'Standard (Binary)': standard_scores,
+                'Bayesian (Human-Aware)': bayesian_scores
+            })
+
+            fig, ax = plt.subplots(figsize=PLOT_CONFIG["figsize"], dpi=PLOT_CONFIG["dpi"])
+
+            # Kernel Density Estimate (KDE) plot
+            df_density.plot(kind='density', ax=ax, linewidth=2)
+
+            # Fill the area under the curves for better visuals
+            # (We use a little numpy trickery to get the data from the plot lines)
+            lines = ax.get_lines()
+
+            # Fill Standard
+            x_std, y_std = lines[0].get_data()
+            ax.fill_between(x_std, y_std, alpha=0.2, color='blue')
+
+            # Fill Bayesian
+            x_bay, y_bay = lines[1].get_data()
+            ax.fill_between(x_bay, y_bay, alpha=0.2, color='orange')
+
+            ax.set_title("Performance Density: Standard vs. Bayesian")
+            ax.set_xlabel("Number of Guesses Needed")
+            ax.set_xlim(0, 20) # Focus on the relevant range for intelligent algorithms
+            ax.grid(True, alpha=0.3)
+
+            c1, c2, c3 = st.columns([1, 4, 1])
+            with c2:
+                st.pyplot(fig, width="content")
+
+            improvement = (1 - avg_bayesian/avg_standard) * 100
+            st.success(f"Bayesian Search is consistently shifting the curve to the left, resulting in a {improvement:.1f}% efficiency gain!")
