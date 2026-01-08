@@ -37,9 +37,13 @@ Install Dependencies It is recommended to use a virtual environment.
 pip install -r requirements.txt
 ```
 
-Run the Simulation To run the head-to-head comparison:
+Run the Simulation.
 ```Bash
 python main.py
+```
+To run the head-to-head comparison:
+```Bash
+python compare_strategies.py
 ```
 
 ## 🧠 What I Learned
