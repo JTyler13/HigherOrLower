@@ -1,11 +1,21 @@
-# Ignore the virtual environment
+# --- New UV Environment ---
+.venv/
+
+# --- Old Environments (Keep just in case) ---
 venv_HoL/
 venv/
-.env
 
-# Ignore Python compiled files
+# --- Secrets & Configs ---
+.env
+# Note: DO NOT ignore 'uv.lock' or 'pyproject.toml'
+# These files should be committed to git so others get your exact setup.
+
+# --- Python compiled files ---
 __pycache__/
 *.pyc
 
-# Ignore Jupyter Notebook checkpoints
+# --- Jupyter Notebook checkpoints ---
 .ipynb_checkpoints/
+
+# --- OS System Files (macOS) ---
+.DS_Store
