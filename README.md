@@ -4,7 +4,7 @@ A Python-based simulation engine that models the "Higher or Lower" guessing game
 
 Now features an **Interactive Web Dashboard** to visualize game paths, scaling experiments, and strategy comparisons in real-time.
 
-## 🚀 Features
+## Features
 * **Interactive Dashboard:** A full Streamlit web application (`app.py`) allowing users to:
     * Run live simulations with adjustable parameters.
     * Inspect specific game paths visually.
@@ -15,7 +15,7 @@ Now features an **Interactive Web Dashboard** to visualize game paths, scaling e
 * **Pandas Integration:** Uses DataFrames for efficient storage and statistical analysis of game history.
 * **Custom Theming:** Implements a "Minty" Bootstrap theme via `.streamlit/config.toml` for a clean UI.
 
-## 📂 Project Structure
+## Project Structure
 ```text
 .
 ├── app.py                # Main Entry Point: Streamlit Web Dashboard
@@ -29,7 +29,7 @@ Now features an **Interactive Web Dashboard** to visualize game paths, scaling e
 └── README.md             # Project documentation
 ```
 
-## 🛠️ Installation & Usage
+## Installation & Usage
 1. Clone the repository
 ```Bash
 git clone https://github.com/JTyler13/HigherOrLower.git
